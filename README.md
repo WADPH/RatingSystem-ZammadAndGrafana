@@ -1,4 +1,4 @@
-# RatingSystem-ZammadAndGrafana
+# Rating System For Zammad + Grafana Visualization
 Manual — how to create a rating system in Zammad in conjunction with Grafana + statistics
 
 ## 1. Steps on the Zammad side 
