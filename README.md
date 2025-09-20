@@ -93,5 +93,6 @@ The panel shows only those tickets that have a closed status, are assigned to an
 ### It could have been better, but since I couldn't find any guides on the internet, I had to create something new.
 
 Tip: If you have more than one agent (which is most likely the case), duplicate the panel you created earlier. In the new panel, simply change the ‘Lucene Query’ field in “Queries” to owner.fullname.keyword:‘Second Agent’. <br> <br>
-In other words, in my solution, you will have to manually add a rating panel for each agent (but it only takes 15 seconds).
+In other words, in my solution, you will have to manually add a rating panel for each agent (but it only takes 15 seconds). 
    
+Just in case, I will leave the JSON file for the entire dashboard (with three panels) and the JSON file for one separate panel.
