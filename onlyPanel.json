@@ -1,0 +1,238 @@
+{
+  "id": 60,
+  "type": "gauge",
+  "title": "Rating: Agent Name",
+  "gridPos": {
+    "x": 8,
+    "y": 1,
+    "h": 8,
+    "w": 8
+  },
+  "fieldConfig": {
+    "defaults": {
+      "mappings": [],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "red",
+            "value": null
+          },
+          {
+            "color": "orange",
+            "value": 3.5
+          },
+          {
+            "color": "green",
+            "value": 4.5
+          }
+        ]
+      },
+      "fieldMinMax": false,
+      "max": 5,
+      "min": 0,
+      "noValue": "-"
+    },
+    "overrides": []
+  },
+  "transformations": [
+    {
+      "id": "convertFieldType",
+      "options": {
+        "conversions": [
+          {
+            "destinationType": "number",
+            "enumConfig": {
+              "text": [
+                "5",
+                "4",
+                "3"
+              ]
+            },
+            "targetField": "rate.keyword"
+          },
+          {
+            "destinationType": "number",
+            "targetField": "Count"
+          }
+        ],
+        "fields": {}
+      }
+    },
+    {
+      "id": "sortBy",
+      "options": {
+        "fields": {},
+        "sort": [
+          {
+            "desc": false,
+            "field": "rate.keyword"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calculateField",
+      "options": {
+        "alias": "rate_times_count",
+        "binary": {
+          "left": {
+            "matcher": {
+              "id": "byName",
+              "options": "rate.keyword"
+            }
+          },
+          "operator": "*",
+          "right": {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            }
+          }
+        },
+        "cumulative": {
+          "field": "rate.keyword",
+          "reducer": "sum"
+        },
+        "mode": "binary",
+        "reduce": {
+          "reducer": "sum"
+        },
+        "window": {
+          "reducer": "mean",
+          "windowAlignment": "trailing",
+          "windowSize": 0.1,
+          "windowSizeMode": "percentage"
+        }
+      }
+    },
+    {
+      "id": "groupBy",
+      "options": {
+        "fields": {
+          "Count": {
+            "aggregations": [
+              "sum"
+            ],
+            "operation": "aggregate"
+          },
+          "owner.fullname.keyword": {
+            "aggregations": [
+              "sum"
+            ],
+            "operation": "groupby"
+          },
+          "rate_times_count": {
+            "aggregations": [
+              "sum"
+            ],
+            "operation": "aggregate"
+          }
+        }
+      }
+    },
+    {
+      "id": "calculateField",
+      "options": {
+        "alias": "Average",
+        "binary": {
+          "left": {
+            "matcher": {
+              "id": "byName",
+              "options": "rate_times_count (sum)"
+            }
+          },
+          "operator": "/",
+          "right": {
+            "matcher": {
+              "id": "byName",
+              "options": "Count (sum)"
+            }
+          }
+        },
+        "mode": "binary",
+        "reduce": {
+          "reducer": "sum"
+        }
+      }
+    },
+    {
+      "id": "organize",
+      "options": {
+        "excludeByName": {
+          "Count (sum)": true,
+          "rate_times_count (sum)": true
+        },
+        "includeByName": {},
+        "indexByName": {},
+        "renameByName": {
+          "Average": "Rating",
+          "owner.fullname.keyword": "Agent"
+        }
+      }
+    }
+  ],
+  "pluginVersion": "12.1.0",
+  "targets": [
+    {
+      "alias": "",
+      "bucketAggs": [
+        {
+          "field": "rate.keyword",
+          "id": "2",
+          "settings": {
+            "min_doc_count": "1",
+            "order": "desc",
+            "orderBy": "_term",
+            "size": "1000"
+          },
+          "type": "terms"
+        },
+        {
+          "field": "owner.fullname.keyword",
+          "id": "3",
+          "settings": {
+            "min_doc_count": "1",
+            "order": "desc",
+            "orderBy": "_term",
+            "size": "10"
+          },
+          "type": "terms"
+        }
+      ],
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "beu5w0ioz90xsd"
+      },
+      "hide": false,
+      "metrics": [
+        {
+          "id": "1",
+          "type": "count"
+        }
+      ],
+      "query": "state.name.keyword:\"closed\" AND NOT owner.fullname.keyword:\"-\" AND owner.fullname.keyword:\"Agent Name\" AND NOT rate.keyword:\"\"",
+      "refId": "Agent Name",
+      "timeField": "created_at"
+    }
+  ],
+  "datasource": {
+    "type": "elasticsearch",
+    "uid": "beu5w0ioz90xsd"
+  },
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "showThresholdLabels": false,
+    "showThresholdMarkers": true,
+    "sizing": "auto",
+    "minVizWidth": 75,
+    "minVizHeight": 75
+  }
+}
