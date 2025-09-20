@@ -96,8 +96,8 @@ Tip: If you have more than one agent (which is most likely the case), duplicate 
 In other words, in my solution, you will have to manually add a rating panel for each agent (but it only takes 15 seconds).  <br>
    
 _Just in case, I will leave the JSON file for the entire dashboard (with three panels) and the JSON file for one separate panel._ <br>
-1. [Panel.json](onlyPanel.json)
-2. [Panel.json](dashboard.json)
+1. [Panel.json file](onlyPanel.json)
+2. [Dashboard.json file](dashboard.json)
 
 
 **I would be grateful if you would rate my work and click on Star.**
